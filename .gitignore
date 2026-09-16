@@ -1,0 +1,15 @@
+*.iml
+.gradle
+.kotlin
+/local.properties
+# کل پوشه‌ی .idea نادیده گرفته می‌شود: این‌ها تنظیمات ماشین هر توسعه‌دهنده است
+# (مسیر SDK، لیست فایل‌های باز، کش ایندکس) و هیچ‌کدام به پروژه مربوط نیست.
+# قبلاً فقط چند فایل خاص نادیده گرفته می‌شد و بقیه (مثل .idea/misc.xml با مسیر
+# SDK محلی) کامیت شده بود.
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  مونوگرام «CK» — Cyberpunk Kit.
+
+  قواعد طراحی:
+   • بوم ۱۰۸×۱۰۸ است ولی لانچر فقط دایره‌ی میانی را نشان می‌دهد.
+     همه‌چیز داخل x=29..79 و y=36..72 نگه داشته شده و دقیقاً روی مرکز (۵۴,۵۴) است.
+   • قاب دور حروف حذف شد: در اندازه‌ی کوچک حروف را خفه می‌کرد و
+     بازوی K از آن بیرون می‌زد.
+   • فقط شکل‌های توپر، بدون گرادیان — همین فایل monochrome هم هست
+     (تم‌های اندروید ۱۳) و آنجا رنگ حذف می‌شود، پس فرم باید به‌تنهایی خوانا باشد.
+   • برش‌های اریب همان زبان بصری برنامه است (CutCornerShape).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- ── C ── قوس زاویه‌دار با دهانه‌ی باز به راست -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M51,36 L36,36 L30,43 L30,65 L36,72 L51,72 L51,63.5 L39,63.5 L39,44.5 L51,44.5 Z" />
+
+    <!-- ── K ── ساقه -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M57,36 L65,36 L65,72 L57,72 Z" />
+    <!-- بازوی بالا -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M65,50 L73,36 L80,36 L71,54 L65,54 Z" />
+    <!-- بازوی پایین -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M65,54 L71,54 L80,72 L73,72 Z" />
+</vector>

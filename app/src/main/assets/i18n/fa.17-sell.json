@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "phase": "17-sell",
+    "count": 13
+  },
+  "Sell": "فروش",
+  "Sell Item": "فروش کالا",
+  "Sale price (eb)": "قیمت فروش (یورودلار)",
+  "List price: %1seb": "قیمت لیست: %1s یورودلار",
+  "Half (%1seb)": "نصف (%1s یورودلار)",
+  "Full (%1seb)": "کامل (%1s یورودلار)",
+  "This item has no catalog price; set the amount yourself.": "این کالا قیمت کاتالوگ ندارد؛ مبلغ را خودت تعیین کن.",
+  "The item is removed from inventory and the amount is added to your eurodollars.": "کالا از موجودی حذف و مبلغ به یورودلارهایت اضافه می‌شود.",
+  "Sold %1s for %2seb": "%1s به قیمت %2s یورودلار فروخته شد",
+  "Could not sell this item.": "فروش این کالا ممکن نشد.",
+  "Cancel": "لغو",
+  "5 • FIRE / RESOLVE ATTACK": "5 • شلیک / انجام حمله",
+  "ROUND %1s": "راند %1s"
+}

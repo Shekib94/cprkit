@@ -1,0 +1,44 @@
+# ─────────────────────────────────────────────────────────────
+# قواعد نگه‌دارنده برای build نوع release (R8 / ProGuard).
+#
+# این فایل از ابتدا در build.gradle.kts ارجاع داده شده بود و وجود داشت، ولی فقط
+# چند خط پیش‌فرض قالب اندروید بود و دلیلِ هیچ‌کدام نوشته نشده بود؛ این نسخه همان
+# قواعد را نگه می‌دارد و برای هرکدام می‌گوید چرا حیاتی است.
+#
+# چرا این قواعد لازم است:
+#  ۱. مدل‌های داده با Gson (نخست در data/CharacterIO.kt) ذخیره/خوانده می‌شوند و
+#     Gson از راه reflection به نام فیلدها وابسته است. نام فیلد همان کلید داخل
+#     فایل‌های سیو است؛ اگر R8 آن را کوتاه کند، سیوهای قبلی خوانده نمی‌شوند.
+#  ۲. LanTrust برای ساخت diff از reflection روی فیلدهای Character استفاده می‌کند
+#     (چون مدل ۶۰+ فیلد دارد و diff دستی همیشه یک حفره‌ی امنیتی جا می‌گذارد).
+#     با کوتاه‌شدن نام‌ها، برگه‌ی تأیید GM همان چیزی را نشان نمی‌دهد که واقعاً
+#     عوض شده است.
+#  ۳. کامنت صریح LanTrust.kt هم همین را می‌گوید: «فیلدهای
+#     com.cyberpunk.gmtool.data.** در keepRules/rules.keep نگه داشته شده‌اند.»
+#
+# نتیجه: کل لایه‌ی داده با نام‌ها و اعضای دست‌نخورده نگه داشته می‌شود.
+# (شخصی و آفلاین است؛ چند صد کیلوبایت حجم بیشتر در برابر سیو سالم، معامله‌ی خوبی است.)
+# ─────────────────────────────────────────────────────────────
+
+# لایه‌ی داده: مدل‌ها، کاتالوگ‌ها، قواعد و ذخیره‌سازی (Gson + reflection + کلیدهای سیو)
+-keep class com.cyberpunk.gmtool.data.** { *; }
+
+# Gson: بدون Signature، ژنریک‌ها (مثل Map<String, Int>) در release اشتباه پارس می‌شوند؛
+# و annotationها برای SerializedName/Expose لازم‌اند.
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepattributes InnerClasses,EnclosingMethod
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+-keepclassmembers,allowobfuscation class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+-dontwarn sun.misc.**
+
+# Compose / AndroidX قواعد مصرف‌کننده‌ی خود را دارند؛ اینجا تکرار نمی‌شوند.
+
+# zxing: فقط برای رمزگشایی QR استفاده می‌شود (تولید QR داخل پروژه است).
+-dontwarn com.google.zxing.**
+
+# اگر R8 کلاس‌های سایه‌ی Kotlin را گزارش داد، این خط نویز را کم می‌کند.
+-dontwarn kotlin.**

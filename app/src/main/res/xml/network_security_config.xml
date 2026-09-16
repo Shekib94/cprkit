@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  سشن محلی روی HTTP ساده کار می‌کند (شبکه‌ی هات‌اسپات، بدون اینترنت).
+  از اندروید ۹ به بعد HTTP رمزنگاری‌نشده به‌طور پیش‌فرض مسدود است؛
+  بدون این فایل اتصال بازیکن‌ها اصلاً برقرار نمی‌شود.
+
+  چون IP گوشی GM ثابت نیست (192.168.43.1، 192.168.1.x، 10.x…)
+  نمی‌توان فهرست دامنه‌ی مشخص نوشت. برنامه هیچ ارتباط اینترنتی ندارد
+  و تنها مقصدش گوشی GM در همان شبکه‌ی محلی است.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

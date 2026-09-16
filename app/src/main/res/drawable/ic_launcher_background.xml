@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  پس‌زمینه‌ی آیکون — مشکی تقریباً خالص با یک شبکه‌ی خیلی کم‌رنگ.
+  عمداً ساده است: در آیکون تطبیقی اندروید حاشیه‌ها بریده می‌شوند،
+  پس هر جزئیاتی نزدیک لبه دیده نمی‌شود.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- زمینه -->
+    <path
+        android:fillColor="#0D0D0D"
+        android:pathData="M0,0h108v108h-108z" />
+
+    <!-- شبکه‌ی محو: حس صفحه‌ی فنی، بدون شلوغی -->
+    <path android:fillColor="#00000000" android:pathData="M27,0L27,108"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+    <path android:fillColor="#00000000" android:pathData="M54,0L54,108"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+    <path android:fillColor="#00000000" android:pathData="M81,0L81,108"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+    <path android:fillColor="#00000000" android:pathData="M0,27L108,27"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+    <path android:fillColor="#00000000" android:pathData="M0,54L108,54"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+    <path android:fillColor="#00000000" android:pathData="M0,81L108,81"
+        android:strokeWidth="0.5" android:strokeColor="#14E53935" />
+
+    <!-- خط تأکید زیر مونوگرام؛ به‌جای گرادیان، چون گرادیان در اندازه‌ی
+         کوچک دیده نمی‌شد و فقط ریسک رندر اضافه می‌کرد. -->
+    <path
+        android:fillColor="#1FE53935"
+        android:pathData="M30,78 L80,78 L80,80 L30,80 Z" />
+
+</vector>

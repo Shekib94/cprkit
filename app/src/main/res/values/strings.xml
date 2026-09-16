@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      نامی که زیر آیکون در لانچر دیده می‌شود. کوتاه نگه داشته شده تا در صفحه‌ی
+      اپلیکیشن‌ها بریده نشود؛ نام کامل در خود برنامه و در README می‌آید.
+
+      چرا «Cyberpunk RED Kit» نیست:
+      طبق Homebrew Content Policy شرکت R. Talsorian Games، عنوان محصولِ طرفداری
+      نباید با نام بازی شروع شود؛ نام بازی فقط به‌عنوان زیرعنوانِ توصیفی مجاز است.
+      مثال خودشان: «Firearms Locker: a Collection of Guns for use with Cyberpunk RED».
+      اگر برنامه را هرگز عمومی منتشر نکنی این قید برایت الزامی نیست، ولی یک خط
+      تغییرش هزینه‌ای ندارد. (برای برگرداندن: همین مقدار را عوض کن.)
+      https://rtalsoriangames.com/homebrew-content-policy/
+    -->
+    <string name="app_name">CPR KIT</string>
+
+    <!-- نام کامل و سیاست‌مطابق — داخل برنامه و در مستندات استفاده می‌شود. -->
+    <string name="app_full_name">CPR KIT — an unofficial companion for use with Cyberpunk RED</string>
+
+    <!--
+      سلب‌مسئولیت حقوقی. هم در صفحه‌ی تنظیمات نشان داده می‌شود و هم در README.
+      اگر روزی برنامه را عمومی کنی، این متن باید در دسترس کاربر باشد.
+    -->
+    <string name="app_legal_notice">Unofficial fan content provided under the Homebrew Content Policy of R. Talsorian Games. Not affiliated with, endorsed by, or sponsored by R. Talsorian Games or CD Projekt RED. Cyberpunk and Cyberpunk RED are trademarks of R. Talsorian Games. This app is free and contains no advertising or in-app purchases.</string>
+</resources>

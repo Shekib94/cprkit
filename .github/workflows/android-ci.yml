@@ -1,0 +1,103 @@
+# CI: در هر push و PR، تست‌های واحد و ساخت APK دیباگ بررسی می‌شوند.
+# JDK 21 چون Gradle 9.x و AGP 9.x حداقل به JDK 17+ نیاز دارند و ۲۱ LTS فعلی است.
+name: Android CI
+
+on:
+  push:
+    branches: [ "main", "arena/**" ]
+  pull_request:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      # SDK روی ایمیجِ runner از پیش نصب و لایسنس‌ها پذیرفته شده است؛
+      # AGP هر کامپوننت نبود (مثلاً compileSdk تازه) را خودش دانلود می‌کند.
+      # (android-actions/setup-android@v3 روی runnerهای جدید به‌خاطر
+      # مهاجرت اجباری Node20→24 شکست می‌خورد، پس حذف شد.)
+      - name: Accept Android SDK licenses (fallback)
+        run: yes | "${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/android-sdk}}/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Unit tests
+        run: ./gradlew test --stacktrace --console=plain 2>&1 | tee gradle-test.log; exit "${PIPESTATUS[0]}"
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug --stacktrace --console=plain 2>&1 | tee gradle-assemble.log; exit "${PIPESTATUS[0]}"
+
+      # نسخه‌ی release جداگانه ساخته می‌شود تا قواعد R8/keepRules هم واقعاً اجرا شوند؛
+      # قبلاً فقط assembleDebug اجرا می‌شد و شکستن release (مثلاً keepRules گم‌شده)
+      # تا وقتی کسی خودش دستی نمی‌ساخت، دیده نمی‌شد.
+      - name: Assemble release APK (R8 + keepRules)
+        run: ./gradlew assembleRelease --stacktrace --console=plain 2>&1 | tee gradle-release.log; exit "${PIPESTATUS[0]}"
+
+      # README ادعا می‌کند lint هم اجرا می‌شود؛ این قدم آن ادعا را واقعی می‌کند.
+      - name: Android lint
+        run: ./gradlew lintDebug --stacktrace --console=plain 2>&1 | tee gradle-lint.log; exit "${PIPESTATUS[0]}"
+
+      - name: Upload reports (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: |
+            app/build/reports/tests/
+            app/build/reports/lint-results-debug.html
+          if-no-files-found: ignore
+
+      # اگر هر قدمی شکست، ته log و اطلاعات محیط به‌صورت issue ثبت می‌شود
+      # تا بدون دسترسی به UI هم قابل خواندن باشد (gh api).
+      - name: Publish failure log as issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "Commit: ${{ github.sha }}"
+            echo '```'
+            java -version 2>&1 || true
+            echo "ANDROID_HOME=${ANDROID_HOME:-unset} ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-unset}"
+            ls "${ANDROID_HOME:-/usr/local/lib/android/sdk}/platforms" 2>/dev/null || true
+            echo '```'
+            echo '## gradle-test.log (tail)'
+            echo '```'
+            tail -c 40000 gradle-test.log 2>/dev/null || echo "(no gradle-test.log)"
+            echo '```'
+            echo '## gradle-assemble.log (tail)'
+            echo '```'
+            tail -c 20000 gradle-assemble.log 2>/dev/null || echo "(no gradle-assemble.log)"
+            echo '```'
+            echo '## gradle-release.log (tail)'
+            echo '```'
+            tail -c 20000 gradle-release.log 2>/dev/null || echo "(no gradle-release.log)"
+            echo '```'
+            echo '## gradle-lint.log (tail)'
+            echo '```'
+            tail -c 20000 gradle-lint.log 2>/dev/null || echo "(no gradle-lint.log)"
+            echo '```'
+          } > ci-failure-body.md
+          gh issue create \
+            --title "CI failure log — run ${{ github.run_number }} (${{ github.sha }})" \
+            --body-file ci-failure-body.md || true
